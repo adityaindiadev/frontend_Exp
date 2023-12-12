@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .grid {
+            width: 1170px;
+            margin: 0 auto;
+        }
+
+        .list {
+            height: 652px;
+            position: relative;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .card {
+
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: all 1s cubic-bezier(0.68, -.55, .265, 1.55);
+
+            perspective: 1000;
+            -ms-transform: perspective(1000px);
+            -moz-transform: perspective(1000px);
+            -ms-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+
+            float: left;
+            width: 222px;
+            height: 311px;
+            background-color: #eee;
+
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: 30px 0 15px 15px;
+
+            &:nth-child(5n) {
+                margin-right: 0;
+            }
+
+            &.ani0 {
+                right: 948px;
+                bottom: 326px;
+            }
+
+            &.ani1 {
+                right: 711px;
+                bottom: 326px;
+            }
+
+            &.ani2 {
+                right: 474px;
+                bottom: 326px;
+            }
+
+            &.ani3 {
+                right: 237px;
+                bottom: 326px;
+            }
+
+            &.ani4 {
+                right: 0;
+                bottom: 326px;
+            }
+
+            &.ani5 {
+                right: 948px;
+                bottom: 0;
+            }
+
+            &.ani6 {
+                right: 711px;
+                bottom: 0;
+            }
+
+            &.ani7 {
+                right: 474px;
+                bottom: 0;
+            }
+
+            &.ani8 {
+                right: 237px;
+                bottom: 0;
+                background-color: Back;
+            }
+
+        }
+
+        .flipedCard {
+
+            
+
+        }
+
+        #stackBtn {
+            background-color: blue;
+            width: 222px;
+            height: 311px;
+            float: left;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: 30px 0 15px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="grid">
+        <ul class="list">
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li class="card">Front</li>
+            <li class="flipedCard">Back</li>
+            <li id="topCardInStack" class="card" style="z-index: 10;">9</li>
+            <li id="stackBtn">Stack</li>
+        </ul>
+
+        <!-- <button class="stack">Stack</button>
+        <button class="spread">Spread</button> -->
+
+    </div>
+
+
+    <script>
+        // document.querySelector('.stack').addEventListener('click', function () {
+        //     var cards = document.querySelectorAll('.card');
+
+        //     cards.forEach(function (card, index) {
+        //         setTimeout(function () {
+        //             card.className = 'card';
+        //         }, index * 150);
+        //     });
+        // });
+
+        document.querySelector('#stackBtn').addEventListener('click', function () {
+            var cards = document.querySelectorAll('.card');
+
+            cards.forEach(function (card, index) {
+                setTimeout(function () {
+                    card.className = 'card';
+                }, index * 150);
+            });
+        });
+
+        // document.querySelector('.spread').addEventListener('click', function () {
+        //     var cards = document.querySelectorAll('.card');
+
+        //     cards.forEach(function (card, index) {
+        //         setTimeout(function () {
+        //             card.className = 'card ani' + index;
+        //         }, index * 150);
+        //     });
+        // });
+
+
+        document.querySelector('#topCardInStack').addEventListener('click', function () {
+
+            console.log("ff");
+            var cards = document.querySelectorAll('.card');
+
+            cards.forEach(function (card, index) {
+                setTimeout(function () {
+                    card.className = 'card ani' + index;
+                }, index * 150);
+            });
+        });
+
+    </script>
+</body>
+
+</html>
