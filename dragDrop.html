@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+	
+body{
+display: flex;
+flex-direction: row
+}
+
+#rawDiv {
+  width: 350px;
+  /* height: 70px; */
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#dropDivContainer1, #dropDivContainer2{
+  width: 350px;
+  /* height: 300px; */
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  margin-left: 20px
+}
+
+img{
+  margin-top: 5px;
+}
+
+</style>
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev, msg) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+  console.log(msg, ev)
+  console.log(data)
+}
+</script>
+</head>
+<body>
+
+
+
+<div id="rawDiv" ondrop="drop(event,'Data Deleted')" ondragover="allowDrop(event)">
+<img id="drag1" src="https://random.imagecdn.app/200/69" draggable="true" ondragstart="drag(event)" >
+<img id="drag2" src="https://random.imagecdn.app/200/69" draggable="true" ondragstart="drag(event)" >
+</div>
+<br>
+<div id="dropDivContainer1" ondrop="drop(event,'Data Saved')" ondragover="allowDrop(event)"></div>
+<div id="dropDivContainer2" ondrop="drop(event,'Data Saved')" ondragover="allowDrop(event)"></div>
+
+</body>
+</html>
