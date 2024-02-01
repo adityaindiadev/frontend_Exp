@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- https://chat.openai.com/share/30d1f0ff-3aa6-46f1-965a-10f29ecb62c3 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player with Waveform</title>
+    <style>
+        #waveformCanvas {
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <audio id="audioPlayer" controls></audio>
+    <button id="playButton">Play</button>
+    <canvas id="waveformCanvas" width="800" height="200"></canvas>
+
+    <script>
+        const audioFileUrl = 'demo.mp3';
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playButton = document.getElementById('playButton');
+        const waveformCanvas = document.getElementById('waveformCanvas');
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        analyser.fftSize = 256;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const canvasContext = waveformCanvas.getContext('2d');
+        const source = audioContext.createMediaElementSource(audioPlayer);
+
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+
+        let isPlaying = false;
+
+        function draw() {
+            analyser.getByteTimeDomainData(dataArray);
+
+            canvasContext.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+            canvasContext.beginPath();
+
+            const sliceWidth = waveformCanvas.width / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * waveformCanvas.height / 2;
+
+                if (i === 0) {
+                    canvasContext.moveTo(x, y);
+                } else {
+                    canvasContext.lineTo(x, y);
+                }
+
+                x += sliceWidth;
+            }
+
+            canvasContext.lineWidth = 2;
+            canvasContext.strokeStyle = 'rgb(0, 0, 0)';
+            canvasContext.stroke();
+
+            if (isPlaying) {
+                requestAnimationFrame(draw);
+            }
+        }
+
+        playButton.addEventListener('click', () => {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume().then(() => {
+                    console.log('AudioContext resumed successfully.');
+                });
+            }
+
+            isPlaying = true;
+            audioPlayer.play();
+            draw();
+        });
+
+        audioPlayer.addEventListener('pause', () => {
+            isPlaying = false;
+        });
+
+        audioPlayer.src = audioFileUrl;
+    </script>
+</body>
+</html>
