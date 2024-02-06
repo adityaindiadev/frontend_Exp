@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Picker</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+       
+        .datepicker {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+        }
+
+        .month-year-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .days-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .days-container button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .days-container button:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="date">Select Date:</label>
+    <input type="text" id="date" name="date" readonly>
+    <input type="hidden" id="hidden-date" name="hidden-date">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var input = document.getElementById('date');
+            var hiddenInput = document.getElementById('hidden-date');
+
+            // Set the maximum date to today
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + dd;
+            input.setAttribute('max', today);
+
+            // Show the date picker when the input is clicked
+            input.addEventListener('click', function () {
+                var datePicker = new Date(2018, 0); //Calender Initiator
+                datePicker.setDate(1); // Start the calendar at the 1st of the month
+                var selectedDate = new Date(input.value);
+
+                // Set the initial value of the date picker to the selected date
+                if (!isNaN(selectedDate.getTime())) {
+                    datePicker = selectedDate;
+                }
+
+                // Show a basic date picker dialog
+                var pickerContainer = document.createElement('div');
+                pickerContainer.classList.add('datepicker');
+
+                var monthYearHeader = document.createElement('div');
+                monthYearHeader.classList.add('month-year-header');
+                // monthYearHeader.textContent = datePicker.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                monthYearHeader.textContent = datePicker.toLocaleDateString('en-US', { month: 'long' });
+
+                var daysContainer = document.createElement('div');
+                daysContainer.classList.add('days-container');
+
+                // Generate days of the month
+                var daysInMonth = new Date(datePicker.getFullYear(), datePicker.getMonth() + 1, 0).getDate();
+                for (var i = 1; i <= daysInMonth; i++) {
+                    var dayButton = document.createElement('button');
+                    dayButton.textContent = i;
+                    dayButton.addEventListener('click', function () {
+                        var selectedDay = this.textContent;
+                        var selectedMonth = datePicker.getMonth() + 1; // Months are zero indexed
+                        var selectedYear = datePicker.getFullYear();
+                        var selectedDateFormatted = selectedYear + '-' + (selectedMonth < 10 ? '0' : '') + selectedMonth + '-' + (selectedDay < 10 ? '0' : '') + selectedDay;
+                        console.log(selectedDateFormatted); //get date from here
+                        input.value = selectedDateFormatted;
+                        hiddenInput.value = selectedDateFormatted;
+                        pickerContainer.remove();
+                    });
+                    daysContainer.appendChild(dayButton);
+                }
+
+                pickerContainer.appendChild(monthYearHeader);
+                pickerContainer.appendChild(daysContainer);
+                document.body.appendChild(pickerContainer);
+            });
+        });
+
+    </script>
+</body>
+
+</html>
