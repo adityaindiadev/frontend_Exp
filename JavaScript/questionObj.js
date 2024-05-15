@@ -44,6 +44,8 @@ const obj = [
 //     'Sample 2':[]
 // }
 
+//My Solutions
+
 let output = {}
 
 obj.forEach((item) => {
@@ -58,4 +60,37 @@ obj.forEach((item) => {
     })
 })
 
-console.log(output);
+// console.log(output);
+
+
+
+
+// Other Solution
+
+let output2 = {}
+
+obj.forEach((item)=>{
+
+    if (output2[item.key]) {
+        output2[item.key].push(item)
+    }else{
+        output2[item.key] = [item]
+    }
+
+})
+
+// console.log(output2);
+
+
+//one more another solutions
+
+const output3 = obj.reduce((acc, item) => {
+    if (acc[item.key]) {
+        acc[item.key].push(item);
+    } else {
+        acc[item.key] = [item];
+    }
+    return acc;
+}, {});
+
+console.log(output3);
