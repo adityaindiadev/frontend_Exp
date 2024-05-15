@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-side Routing</title>
+</head>
+<body>
+
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+
+    <div id="content"></div>
+
+    <script>
+        // Function to load content based on URL path
+        function loadContent() {
+            var path = window.location.pathname;
+
+            // Check path and load appropriate content
+            switch(path) {
+                case '/about':
+                    document.getElementById('content').innerHTML = '<h2>About Us</h2><p>This is the about page.</p>';
+                    break;
+                case '/contact':
+                    document.getElementById('content').innerHTML = '<h2>Contact Us</h2><p>This is the contact page.</p>';
+                    break;
+                default:
+                    document.getElementById('content').innerHTML = '<h2>Home</h2><p>Welcome to our website!</p>';
+            }
+        }
+
+        // Load content when page loads and when hash changes
+        window.addEventListener('load', loadContent);
+        window.addEventListener('popstate', loadContent);
+        document.addEventListener('click', function(event) {
+            if (event.target.tagName === 'A') {
+                event.preventDefault();
+                history.pushState(null, null, event.target.getAttribute('href'));
+                loadContent();
+            }
+        });
+    </script>
+</body>
+</html>
